@@ -1,0 +1,267 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #f8fafc;
+  background: #030712;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(34, 197, 94, 0.14), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.12), transparent 26%),
+    #030712;
+}
+
+button, input, select { font: inherit; }
+
+.desk-shell {
+  display: grid;
+  grid-template-columns: 460px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.tickets-column {
+  padding: 28px;
+  border-right: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(3, 7, 18, 0.75);
+}
+
+.brand-block,
+.ticket-card,
+.ticket-detail,
+.message-card,
+.search-input,
+.filters-row select,
+.reply-form input,
+.reply-form button,
+.sla-badge {
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(15, 23, 42, 0.72);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+}
+
+.brand-block {
+  border-radius: 32px;
+  padding: 32px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #4ade80;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+
+.brand-block h1,
+.ticket-card h2,
+.detail-header h2 {
+  margin: 14px 0 0;
+  font-size: 2.6rem;
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+}
+
+.search-input,
+.filters-row select,
+.reply-form input,
+.reply-form button {
+  color: #fff;
+  border-radius: 22px;
+  padding: 18px 20px;
+  outline: 0;
+}
+
+.search-input {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.filters-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ticket-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.ticket-card {
+  cursor: pointer;
+  text-align: left;
+  border-radius: 28px;
+  padding: 24px;
+  color: inherit;
+  transition: 220ms ease;
+}
+
+.ticket-card.active,
+.reply-form button {
+  background: linear-gradient(135deg, #10b981, #0ea5e9);
+  border-color: transparent;
+}
+
+.ticket-card:hover {
+  transform: translateY(-3px);
+}
+
+.ticket-top,
+.sla-line,
+.detail-header,
+.status-actions,
+.message-meta,
+.reply-form {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.ticket-top strong,
+.priority,
+.sla-badge,
+.sla-line span,
+.sla-line em,
+.ticket-card p,
+.message-meta span {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 800;
+}
+
+.priority,
+.sla-badge {
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+}
+
+.priority.hot {
+  background: rgba(239, 68, 68, 0.14);
+  color: #fb7185;
+}
+
+.ticket-card h2 {
+  font-size: 1.7rem;
+}
+
+.ticket-card p,
+.sla-line em,
+.message-meta span {
+  color: #94a3b8;
+  margin: 14px 0 0;
+}
+
+.sla-line {
+  margin-top: 18px;
+}
+
+.chat-column {
+  padding: 28px;
+}
+
+.ticket-detail {
+  border-radius: 36px;
+  padding: 32px;
+  min-height: calc(100vh - 56px);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.detail-header h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.status-actions {
+  flex-wrap: wrap;
+}
+
+.status-actions select {
+  border-radius: 999px;
+  color: #fff;
+  padding: 14px 20px;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.messages-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 32px;
+  align-content: start;
+}
+
+.message-card {
+  max-width: 760px;
+  border-radius: 26px;
+  padding: 22px;
+  animation: msg-in 450ms ease;
+}
+
+.message-card.agent {
+  margin-left: auto;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(14, 165, 233, 0.16));
+}
+
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message-card p {
+  margin: 14px 0 0;
+  color: #e2e8f0;
+  line-height: 1.8;
+}
+
+.reply-form {
+  margin-top: 28px;
+}
+
+.reply-form input {
+  flex: 1;
+}
+
+.reply-form button {
+  border: 0;
+  cursor: pointer;
+  font-weight: 900;
+  padding-inline: 32px;
+}
+
+@media (max-width: 980px) {
+  .desk-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .tickets-column,
+  .chat-column,
+  .ticket-detail,
+  .brand-block {
+    padding: 20px;
+  }
+
+  .filters-row,
+  .reply-form {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
