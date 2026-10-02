@@ -1,3 +1,4 @@
+import OpenContext from './OpenContext.jsx'
 import { useEffect, useMemo, useState } from 'react'
 
 const STORAGE_KEY = 'support-ticket-center-state'
@@ -215,6 +216,7 @@ export default function App() {
           </form>
         </section>
       </main>
+      <OpenContext/>
     </div>
   )
 }
