@@ -59,7 +59,7 @@ export default function App() {
   const [query, setQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('Все статусы')
   const [priorityFilter, setPriorityFilter] = useState('Все приоритеты')
-  const [draft, setDraft] = useState('')
+  const [drafts, setDrafts] = useState({})
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets))
@@ -79,19 +79,22 @@ export default function App() {
     [priorityFilter, query, statusFilter, tickets],
   )
 
-  const activeTicket = tickets.find((ticket) => ticket.id === activeId) || filteredTickets[0] || tickets[0]
+  const activeTicket = filteredTickets.find((ticket) => ticket.id === activeId) || filteredTickets[0]
+  const draft = drafts[activeTicket?.id] || ''
+  const setDraft = value => { if (activeTicket) setDrafts(current => ({...current, [activeTicket.id]: value})) }
 
   const updateActiveTicket = (patch) => {
+    if (!activeTicket) return
     setTickets((current) =>
       current.map((ticket) =>
-        ticket.id === activeTicket.id ? { ...ticket, ...patch } : ticket,
+        ticket.id === activeTicket?.id ? { ...ticket, ...patch } : ticket,
       ),
     )
   }
 
   const sendMessage = (event) => {
     event.preventDefault()
-    if (!draft.trim()) return
+    if (!draft.trim() || !activeTicket) return
 
     updateActiveTicket({
       messages: [
@@ -103,7 +106,7 @@ export default function App() {
         },
       ],
       status: activeTicket.status === 'Открыт' ? 'В работе' : activeTicket.status,
-      slaMinutes: Math.max(5, activeTicket.slaMinutes - 8),
+
     })
     setDraft('')
   }
@@ -113,7 +116,7 @@ export default function App() {
       <aside className="tickets-column">
         <header className="brand-block">
           <p className="eyebrow">Support Ticket Center</p>
-          <h1>Helpdesk-панель со SLA и перепиской</h1>
+          <h1>Входящие обращения</h1>
         </header>
 
         <input
@@ -125,14 +128,14 @@ export default function App() {
         />
 
         <div className="filters-row">
-          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+          <select aria-label="Фильтр статуса" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
             <option>Все статусы</option>
             <option>Открыт</option>
             <option>В работе</option>
             <option>Ожидает клиента</option>
             <option>Закрыт</option>
           </select>
-          <select value={priorityFilter} onChange={(event) => setPriorityFilter(event.target.value)}>
+          <select aria-label="Фильтр приоритета" value={priorityFilter} onChange={(event) => setPriorityFilter(event.target.value)}>
             <option>Все приоритеты</option>
             <option>Высокий</option>
             <option>Средний</option>
@@ -140,12 +143,12 @@ export default function App() {
           </select>
         </div>
 
-        <div className="ticket-list">
+        <p className="demo-note">Учебные обращения. Ответы остаются в этой демо-переписке.</p><div className="ticket-list">{filteredTickets.length === 0 && <p className="empty-text">Обращений не найдено. Измените поиск или фильтры.</p>}
           {filteredTickets.map((ticket) => (
             <button
               type="button"
               key={ticket.id}
-              className={ticket.id === activeTicket.id ? 'ticket-card active' : 'ticket-card'}
+              className={ticket.id === activeTicket?.id ? 'ticket-card active' : 'ticket-card'}
               onClick={() => setActiveId(ticket.id)}
             >
               <div className="ticket-top">
@@ -158,7 +161,7 @@ export default function App() {
               <p>{ticket.client} • {ticket.channel}</p>
               <div className="sla-line">
                 <span>{ticket.status}</span>
-                <em>SLA {ticket.slaMinutes} мин</em>
+                <em>Срок ответа: {ticket.slaMinutes} мин</em>
               </div>
             </button>
           ))}
@@ -166,7 +169,7 @@ export default function App() {
       </aside>
 
       <main className="chat-column">
-        <section className="ticket-detail">
+        <section className="ticket-detail">{!activeTicket && <p className="empty-text">Выберите обращение из очереди.</p>}
           <div className="detail-header">
             <div>
               <p className="eyebrow">{activeTicket?.client}</p>
@@ -174,7 +177,7 @@ export default function App() {
             </div>
             <div className="status-actions">
               <select
-                value={activeTicket?.status || 'Открыт'}
+                aria-label="Статус обращения" disabled={!activeTicket} value={activeTicket?.status || 'Открыт'}
                 onChange={(event) => updateActiveTicket({ status: event.target.value })}
               >
                 <option>Открыт</option>
@@ -182,7 +185,7 @@ export default function App() {
                 <option>Ожидает клиента</option>
                 <option>Закрыт</option>
               </select>
-              <div className="sla-badge">SLA {activeTicket?.slaMinutes} мин</div>
+              <div className="sla-badge">Демо SLA: {activeTicket?.slaMinutes ?? "—"} мин</div>
             </div>
           </div>
 
@@ -206,9 +209,9 @@ export default function App() {
               type="text"
               value={draft}
               onChange={(event) => setDraft(event.target.value)}
-              placeholder="Написать ответ клиенту..."
+              aria-label="Ответ" disabled={!activeTicket} placeholder="Написать ответ…"
             />
-            <button type="submit">Отправить</button>
+            <button type="submit" disabled={!activeTicket || !draft.trim()}>Добавить ответ</button>
           </form>
         </section>
       </main>
