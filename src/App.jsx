@@ -116,7 +116,7 @@ export default function App() {
     <div className="desk-shell">
       <aside className="tickets-column">
         <header className="brand-block">
-          <p className="eyebrow">Support Ticket Center</p>
+          <p className="eyebrow">Служба поддержки</p>
           <h1>Входящие обращения</h1>
         </header>
 
