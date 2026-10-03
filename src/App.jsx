@@ -113,11 +113,11 @@ export default function App() {
   }
 
   return (
-    <div className="desk-shell">
-      <aside className="tickets-column">
+    <div className="desk-shell"><nav className="operator-rail" aria-label="Навигация поддержки"><a className="dialog-logo" href="#inbox">д.</a><a href="#inbox" aria-label="Обращения">☰</a><a href="#conversation" aria-label="Переписка">↗</a><a href="https://cherreshenka1.github.io/portfolio/" aria-label="Портфолио">АБ</a></nav>
+      <aside id="inbox" className="tickets-column">
         <header className="brand-block">
           <p className="eyebrow">Служба поддержки</p>
-          <h1>Входящие обращения</h1>
+          <h1>Диалоги</h1>
         </header>
 
         <input
@@ -169,7 +169,7 @@ export default function App() {
         </div>
       </aside>
 
-      <main className="chat-column">
+      <main id="conversation" className="chat-column">
         <section className="ticket-detail">{!activeTicket && <p className="empty-text">Выберите обращение из очереди.</p>}
           <div className="detail-header">
             <div>
@@ -216,7 +216,7 @@ export default function App() {
           </form>
         </section>
       </main>
-      <OpenContext/>
+      <details className="sources"><summary>Об учебных обращениях</summary><OpenContext/></details>
     </div>
   )
 }
